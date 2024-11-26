@@ -1,0 +1,100 @@
+
+\documentclass[12pt]{article}
+\usepackage{hyperref}
+\usepackage{amsmath}
+
+\begin{document}
+
+\title{Abgabe 1 für Computergestützte Methoden}
+\author{Gruppe 25 
+        \\Emre Seker 4105904
+        \\Andrej Neufeld 4248728 
+        \\Marvin Wali 3868799}
+
+\date{2. Dezember 2024}
+
+\maketitle
+\newpage
+
+
+
+\tableofcontents
+\newpage
+
+\section{Der zentrale Grenzwertsatz}
+Der zentrale Grenzwertsatz (ZGS) ist ein fundamentales Resultat der Wahrscheinlichkeitstheorie, das die Verteilung von Summen unabhängiger, identisch verteilter (i.i.d.) Zufallsvariablen beschreibt. Er besagt, dass unter bestimmten Voraussetzungen die Summe einer großen Anzahl solcher Zufallsvariablen annähernd normalverteilt ist, unabhängig von der Verteilung der einzelnen Variablen. Dies ist besonders nützlich, da die Normalverteilung gut untersucht und mathematisch handhabbar ist.
+
+\subsection{Aussage}
+Sei $X_1, X_2, \dots, X_n$ eine Folge von i.i.d. Zufallsvariablen mit dem Erwartungswert $\\mu = E(X_i)$ und der Varianz $\\sigma^2 = \\text{Var}(X_i)$, wobei $0 < \\sigma^2 < \\infty$ gilt. Dann konvergiert die standardisierte Summe $Z_n$ dieser Variablen für $n \\to \\infty$ in Verteilung gegen eine Standardnormalverteilung:
+
+\begin{equation}
+Z_n = \\frac{\\sum_{i=1}^n X_i - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{d} N(0,1).
+\end{equation}
+
+Das bedeutet, dass für große $n$ die Summe der Variablen näherungsweise normalverteilt ist mit Erwartungswert $n\\mu$ und Varianz $n\\sigma^2$:
+
+\begin{equation}
+\sum_{i=1}^n X_i \\sim N(n\\mu, n\\sigma^2).
+\end{equation}
+
+\subsection{Erklärung der Standardisierung}
+Um die Summe der Zufallsvariablen in eine Standardnormalverteilung zu transformieren, subtrahiert man den Erwartungswert $n\\mu$ und teilt durch die Standardabweichung $\\sigma\\sqrt{n}$. Dies führt zu obiger Formel.
+
+\subsection{Anwendungen}
+Der ZGS wird in vielen Bereichen der Statistik und der Wahrscheinlichkeitstheorie angewendet. Typische Beispiele sind:
+\begin{itemize}
+    \item Bewertung von Risikoprognosen in der Finanzwirtschaft.
+    \item Analyse von Zufallsprozessen in der Signalverarbeitung.
+\end{itemize}
+
+\section{Bearbeitung zur Aufgabe 1}
+\subsection{Datenhaltung \& -aufbereitung}
+\subsubsection{Berechnung der höchsten mittleren Temperatur}
+Die höchste mittlere Temperatur beträgt 28,33 Grad Celsius. Dies wurde durch Berechnung der Maximalwerte in der Spalte \texttt{average\_temperature} des bereitgestellten Datensatzes ermittelt.
+
+\subsubsection{Datenbank-Schema}
+Das entworfene Datenbankschema beinhaltet die Tabellen:
+\begin{itemize}
+    \item \textbf{Gruppen} (Primärschlüssel: \texttt{gruppe\_id})
+    \item \textbf{Stationen} (Primärschlüssel: \texttt{station\_id})
+    \item \textbf{Temperaturen} (Primärschlüssel: \texttt{id})
+\end{itemize}
+
+\subsubsection{SQL-DDL-Befehle}
+\begin{verbatim}
+-- Tabelle: Gruppen
+CREATE TABLE Gruppen (
+    gruppe_id INTEGER PRIMARY KEY,
+    gruppenname TEXT NOT NULL
+);
+
+-- Tabelle: Stationen
+CREATE TABLE Stationen (
+    station_id INTEGER PRIMARY KEY,
+    station_name TEXT NOT NULL
+);
+
+-- Tabelle: Temperaturen
+CREATE TABLE Temperaturen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    station_id INTEGER NOT NULL,
+    gruppe_id INTEGER NOT NULL,
+    datum DATE NOT NULL,
+    durchschnittstemperatur REAL NOT NULL,
+    FOREIGN KEY (station_id) REFERENCES Stationen(station_id),
+    FOREIGN KEY (gruppe_id) REFERENCES Gruppen(gruppe_id)
+);
+\end{verbatim}
+
+\subsubsection{SQL-Abfrage zur höchsten mittleren Temperatur}
+\begin{verbatim}
+SELECT MAX(durchschnittstemperatur) AS max_temperature_celsius
+FROM Temperaturen;
+\end{verbatim}
+
+\section*{Literatur}
+\begin{thebibliography}{1}
+\bibitem{Klenke2013} Achim Klenke. \textit{Wahrscheinlichkeitstheorie.} Springer, 3. Auflage, 2013.
+\end{thebibliography}
+
+\end{document}
