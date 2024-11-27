@@ -1,0 +1,32 @@
+### python code to clean the dataset ###
+
+
+import pandas as pd
+import datetime as dt
+
+url = "https://raw.github.com/AndrejUniCode/24-25_CoMet_Gruppe25/main/bike_sharing_data_(with_NAs).csv"
+df = pd.read_csv(url)
+df = df[df["group"]==25]
+
+df.describe())
+df[df.isna().any(axis=1)]
+
+df["date"] = pd.to_datetime(df["date"])
+df["day_of_year"]= df["date"].dt.dayofyear
+
+days = {0:2, 1:3, 2:4, 3:5, 4:6, 5:7, 6:1}
+df["day_of_week"]= df["date"].dt.dayofweek
+df["day_of_week"]= df["day_of_week"].apply(lambda x :days[x])
+df["month_of_year"]= df["date"].dt.month
+
+df = df.dropna()
+df.describe()
+
+#drops rows where precipitation, windspeed and count are below 0, cant be negative
+df = df.drop(df[(df["precipitation"] < 0) | (df["windspeed"] < 0) | (df["count"] < 0)].index)
+
+df["day_of_year"] = df["day_of_year"].astype(float)
+df["day_of_week"] = df["day_of_week"].astype(float)
+df["month_of_year"] = df["month_of_year"].astype(float)
+
+df.to_csv("bike_sharing_data_cleaned_group25.csv", index=False)
