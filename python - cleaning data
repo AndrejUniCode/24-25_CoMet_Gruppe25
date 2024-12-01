@@ -6,9 +6,8 @@ import datetime as dt
 
 url = "https://raw.github.com/AndrejUniCode/24-25_CoMet_Gruppe25/main/bike_sharing_data_(with_NAs).csv"
 df = pd.read_csv(url)
-df = df[df["group"]==25]
 
-df.describe())
+df.describe()
 df[df.isna().any(axis=1)]
 
 df["date"] = pd.to_datetime(df["date"])
@@ -29,4 +28,4 @@ df["day_of_year"] = df["day_of_year"].astype(float)
 df["day_of_week"] = df["day_of_week"].astype(float)
 df["month_of_year"] = df["month_of_year"].astype(float)
 
-df.to_csv("bike_sharing_data_cleaned_group25.csv", index=False)
+df.to_csv("bike_sharing_data_cleaned.csv", index=False)
